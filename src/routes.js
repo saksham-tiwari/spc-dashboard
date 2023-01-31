@@ -23,21 +23,29 @@ import Icons from "views/Icons.js";
 import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
 import Upgrade from "views/Upgrade.js";
+import AddProduct from "pages/AddProduct/AddProduct";
+import ViewProducts from "pages/ViewProducts/ViewProducts";
 
 const dashboardRoutes = [
-  {
-    upgrade: true,
-    path: "/upgrade",
-    name: "Upgrade to PRO",
-    icon: "nc-icon nc-alien-33",
-    component: Upgrade,
-    layout: "/admin"
-  },
   {
     path: "/dashboard",
     name: "Dashboard",
     icon: "nc-icon nc-chart-pie-35",
     component: Dashboard,
+    layout: "/admin"
+  },
+  {
+    path: "/add-product",
+    name: "Add Product",
+    icon: "nc-icon nc-simple-add",
+    component: AddProduct,
+    layout: "/admin"
+  },
+  {
+    path: "/product-listing",
+    name: "View Products",
+    icon: "nc-icon nc-notes",
+    component: ViewProducts,
     layout: "/admin"
   },
   {

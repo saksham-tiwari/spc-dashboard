@@ -1,0 +1,15 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.form-select{
+    padding: 10px !important;
+    border: 1px lightgray solid !important;
+    border-radius: 4px;
+    color: grey;
+    width: 100%;
+}
+
+.form-select:focus {
+    border-color: gray;
+    outline-color: gray;
+    box-shadow: none !important;
+}
