@@ -109,7 +109,7 @@ const rows = [
     createData('Oreo', 437, 18.0, 63, 4.0),
 ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
-export default function CustomPaginationActionsTable() {
+export default function CustomPaginationActionsTable(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -131,33 +131,34 @@ export default function CustomPaginationActionsTable() {
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
       <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
+            {props.titles.map((title,i)=><StyledTableCell align={!i?"left":"center"}>{title}</StyledTableCell>)}
+            {/* <StyledTableCell>Dessert (100g serving)</StyledTableCell>
             <StyledTableCell align="right">Calories</StyledTableCell>
             <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
             <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
+            ? props.products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : props.products
+          ).map((prod,i) => (
+            <TableRow key={prod._id}>
+              <TableCell style={{ width: 160 }} component="th" scope="row">
+                {prod.name}
               </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.calories}
+              <TableCell style={{ width: 160 }} align="center">
+                {prod.category}
               </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.fat}
+              <TableCell style={{ width: 160 }} align="center">
+                {prod.quantity}
               </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.carbs}
+              <TableCell style={{ width: 160 }} align="center">
+                {prod.price}
               </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.protein}
+              <TableCell style={{ width: 160 }} align="center">
+                {prod._id}
               </TableCell>
             </TableRow>
           ))}
@@ -173,7 +174,7 @@ export default function CustomPaginationActionsTable() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
               colSpan={5}
-              count={rows.length}
+              count={props.products.length}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{

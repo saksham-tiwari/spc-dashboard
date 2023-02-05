@@ -13,6 +13,15 @@ import {
   } from "react-bootstrap";
 
 const AddProduct = () => {
+
+    const submit = (e)=>{
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        for (const pair of fd.entries()) {
+            console.log(`${pair[0]}, ${pair[1]}`);
+          }
+          
+    }
   return (
     <Container fluid>
         <Row>
@@ -22,7 +31,7 @@ const AddProduct = () => {
                 <Card.Title as="h4">Add Product</Card.Title>
               </Card.Header>
               <Card.Body>
-                <Form>
+                <Form onSubmit={submit}>
                   <Row>
                     <Col md="12">
                       <Form.Group>
@@ -31,6 +40,7 @@ const AddProduct = () => {
                           defaultValue=""
                           placeholder="Product Name"
                           type="text"
+                          name="name"
                         ></Form.Control>
                       </Form.Group>
                     </Col>
@@ -60,9 +70,9 @@ const AddProduct = () => {
                     <Col md="12">
                       <Form.Group>
                         <label>Product Category</label> <br/>
-                        <Form.Select aria-label="Default select example">
-                            <option>Select Category</option>
-                            <option value="1">Soap</option>
+                        <Form.Select name="category" aria-label="Default select example">
+                            <option value="null">Select Category</option>
+                            <option value="Soap">Soap</option>
                         </Form.Select>
                       </Form.Group>
                     </Col>
@@ -73,7 +83,7 @@ const AddProduct = () => {
                         {/* <label>Address</label> */}
                         <Form.Group controlId="formFileMultiple">
                             <Form.Label>Upload Product Images</Form.Label>
-                            <Form.Control type="file" multiple size="sm" accept="image/*" />
+                            <Form.Control name="image" type="file" multiple size="sm" accept="image/*" />
                         </Form.Group>
                       </Form.Group>
                     </Col>
@@ -86,6 +96,7 @@ const AddProduct = () => {
                           defaultValue={0}
                           placeholder="Quantity"
                           type="number"
+                          name="quantity"
                         ></Form.Control>
                       </Form.Group>
                     </Col>
@@ -96,6 +107,7 @@ const AddProduct = () => {
                           defaultValue={10}
                           placeholder="Price in Rs."
                           type="number"
+                          name="price"
                         ></Form.Control>
                       </Form.Group>
                     </Col>
@@ -110,6 +122,7 @@ const AddProduct = () => {
                           placeholder="Describe your product"
                           rows="4"
                           as="textarea"
+                          name="description"
                         ></Form.Control>
                       </Form.Group>
                     </Col>
