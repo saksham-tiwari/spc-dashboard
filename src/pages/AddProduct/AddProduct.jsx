@@ -11,15 +11,34 @@ import {
     Row,
     Col
   } from "react-bootstrap";
+import { addProduct } from 'server/services/admin/admin.service';
 
 const AddProduct = () => {
 
     const submit = (e)=>{
         e.preventDefault();
-        const fd = new FormData(e.target);
-        for (const pair of fd.entries()) {
-            console.log(`${pair[0]}, ${pair[1]}`);
+        let c =0;
+        Array.from(e.target.querySelectorAll("input,select,textarea")).forEach(ele=>{
+          if(!ele.value.trim()){
+            c++;
+            ele.style.outline="2px solid red";
+          } else{
+            ele.style.outline="none";
           }
+        })
+        if(!c) {
+          const fd = new FormData(e.target);
+          addProduct(fd)
+          .then((res)=>{
+            console.log(res);
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
+        }
+        // for (const pair of fd.entries()) {
+        //     console.log(`${pair[0]}, ${pair[1]}`);
+        //   }
           
     }
   return (
@@ -44,34 +63,13 @@ const AddProduct = () => {
                         ></Form.Control>
                       </Form.Group>
                     </Col>
-                    {/* <Col className="px-1" md="3">
-                      <Form.Group>
-                        <label>Username</label>
-                        <Form.Control
-                          defaultValue="michael23"
-                          placeholder="Username"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                    <Col className="pl-1" md="4">
-                      <Form.Group>
-                        <label htmlFor="exampleInputEmail1">
-                          Email address
-                        </label>
-                        <Form.Control
-                          placeholder="Email"
-                          type="email"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col> */}
                   </Row>
                   <Row>
                     <Col md="12">
                       <Form.Group>
                         <label>Product Category</label> <br/>
                         <Form.Select name="category" aria-label="Default select example">
-                            <option value="null">Select Category</option>
+                            <option value="">Select Category</option>
                             <option value="Soap">Soap</option>
                         </Form.Select>
                       </Form.Group>
@@ -97,6 +95,7 @@ const AddProduct = () => {
                           placeholder="Quantity"
                           type="number"
                           name="quantity"
+                          onChange={e=>{if(e.target.value<0)e.target.value=0}}
                         ></Form.Control>
                       </Form.Group>
                     </Col>
@@ -108,6 +107,7 @@ const AddProduct = () => {
                           placeholder="Price in Rs."
                           type="number"
                           name="price"
+                          onChange={e=>{if(e.target.value<0)e.target.value=0}}
                         ></Form.Control>
                       </Form.Group>
                     </Col>
