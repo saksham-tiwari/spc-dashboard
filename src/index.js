@@ -18,7 +18,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/animate.min.css";
@@ -28,18 +28,17 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./index.css"
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import App from "App";
+import { Provider } from 'react-redux'
+import store from "server/redux/store";
 
-import AdminLayout from "layouts/Admin.js";
-import Auth from "layouts/Auth";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
 root.render(
   <BrowserRouter>
-    <Switch>
-      <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      <Route path="/auth/login" render={()=><Auth/>}/>
-      <Redirect from="/" to="/admin/dashboard" />
-    </Switch>
+      <Provider store={store}>
+        <App/>
+      </Provider>
   </BrowserRouter>
 );

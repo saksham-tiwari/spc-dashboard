@@ -1,3 +1,10 @@
 body {
     background-color: #F2F7F7;
   }
+
+.ErrorRed{
+    /* display: inline; */
+    color: red;
+    margin-top: -20px;
+    font-size: 12px;
+}

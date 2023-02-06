@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MDBBtn,
   MDBContainer,
@@ -12,8 +12,56 @@ import {
 }
 from 'mdb-react-ui-kit';
 import "./styles.css"
+import { login } from 'server/services/auth/auth.service';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from 'server/redux/actions/user';
+import { useHistory } from 'react-router';
 
 function App() {
+    const dispatch = useDispatch()
+    const [email,setEmail] = useState("");
+    const [password,setPassword] = useState("");
+    const [emailErr,setEmailErr] = useState("");
+    const [passErr,setPassErr] = useState("");
+    const history = useHistory();
+    const isUser = useSelector((state)=>state.user).isUser||localStorage.getItem("token")
+    useEffect(()=>{
+        if(isUser) history.push("/admin/dashboard")
+    },[])
+    const loginCall = ()=>{
+        let c=0;
+        if(!email.trim()) {
+            setEmailErr("Cannot be empty");
+            c++;
+        } else setEmailErr("")
+        if(!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+            setEmailErr("Enter valid email")
+            c++;
+        } else setEmailErr("")
+        if(!password.trim()) {
+            setPassErr("Enter your password");
+            c++;
+        } else setPassErr("")
+        if(!c){
+            login({email,password})
+            .then(async(res) => {
+                console.log(res);
+                // dispatch(setLoading(false))
+                localStorage.setItem("user", JSON.stringify(res.data))
+                localStorage.setItem("token", res.data.token)
+                await dispatch(setUser(true))
+                history.push("/admin/dashboard")
+            })
+            .catch((err) => { 
+                console.log(err);
+                if(err.response.status===401) setPassErr("Incorrect Password!")
+                if(err.response.status===404) setEmailErr("Invalid user! Create an account.")
+                console.log(err);
+                // dispatch(setLoading(false))
+            })
+        }
+        
+    }
   return (
     <MDBContainer className="my-5">
 
@@ -42,10 +90,12 @@ function App() {
 
               <h5 className="fw-normal my-4 pb-3" style={{letterSpacing: '1px'}}>Sign into your admin account</h5>
 
-                <MDBInput wrapperClass='mb-4' label='Email address' id='formControlLg' type='email' size="lg"/>
-                <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg"/>
+                <MDBInput wrapperClass='mb-4' value={email} onChange={e=>setEmail(e.target.value)} label='Email address' id='formControlLg' type='email' size="lg"/>
+                <p className='ErrorRed'>{emailErr}</p>
+                <MDBInput wrapperClass='mb-4' value={password} onChange={e=>setPassword(e.target.value)} label='Password' id='formControlLg' type='password' size="lg"/>
+                <p className='ErrorRed'>{passErr}</p>
 
-              <MDBBtn className="mb-4 px-5" color='dark' size='lg'>Login</MDBBtn>
+              <MDBBtn onClick={loginCall} className="mb-4 px-5" color='dark' size='lg'>Login</MDBBtn>
               {/* <div className='d-flex flex-row justify-content-start'>
                 <a href="#!" className="small text-muted me-1">Terms of use.</a>
                 <a href="#!" className="small text-muted">Privacy policy</a>

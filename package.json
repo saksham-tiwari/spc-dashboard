@@ -19,6 +19,7 @@
     "react-chartist": "0.14.4",
     "react-dom": ">=16.8.0",
     "react-notification-alert": "0.0.13",
+    "react-redux": "^8.0.5",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "5.0.1",
