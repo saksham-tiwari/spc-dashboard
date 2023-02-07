@@ -16,11 +16,15 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteModal from "./DeleteModal"
+import { deleteProduct } from 'server/services/admin/admin.service';
+import { message } from 'antd';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: "#247F70",
       color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
@@ -125,9 +129,30 @@ export default function CustomPaginationActionsTable(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const [show,setShow] = React.useState(false);
+  const [del,setDel] = React.useState("");
+  const [prodId,setProdId] = React.useState("");
+  React.useEffect(()=>{
+    if(del.length){
+      deleteProduct(del)
+      .then((res)=>{
+        console.log(res)
+        setDel("")
+        props.setUpdate(true)
+        message.success("Deleted")
+      })
+      .catch((err)=>{
+        console.log(err)
+        setDel("")
+        message.error("Delete failed")
+      })
+    }
+  },[del])
 
   return (
     <TableContainer component={Paper}>
+    <DeleteModal show={show} setShow={setShow} prodId={prodId} setDel={setDel}/>
+
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
       <TableHead>
           <TableRow>
@@ -158,7 +183,13 @@ export default function CustomPaginationActionsTable(props) {
                 {prod.price}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center">
-                {prod._id}
+                <div className='d-flex align-items-center justify-content-center actions'>
+                  <EditIcon className='cursor-pointer edit'/>
+                  <DeleteIcon onClick={()=>{
+                    setProdId(prod._id)
+                    setShow(true)
+                    }} className='cursor-pointer delete'/>
+                </div>
               </TableCell>
             </TableRow>
           ))}

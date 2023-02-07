@@ -25,6 +25,7 @@ import Notifications from "views/Notifications.js";
 import Upgrade from "views/Upgrade.js";
 import AddProduct from "pages/AddProduct/AddProduct";
 import ViewProducts from "pages/ViewProducts/ViewProducts";
+import ViewOrders from "pages/ViewOrders/ViewOrders";
 
 const dashboardRoutes = [
   {
@@ -46,6 +47,13 @@ const dashboardRoutes = [
     name: "View Products",
     icon: "nc-icon nc-notes",
     component: ViewProducts,
+    layout: "/admin"
+  },
+  {
+    path: "/order-listing",
+    name: "View Orders",
+    icon: "nc-icon nc-notes",
+    component: ViewOrders,
     layout: "/admin"
   },
   {

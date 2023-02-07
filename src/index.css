@@ -13,3 +13,14 @@
     outline-color: gray;
     box-shadow: none !important;
 }
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.actions .edit{
+    color: #247F70;
+}
+.actions .delete{
+    color: rgb(225, 67, 43);
+}

@@ -2,7 +2,7 @@ import CustomPaginationActionsTable from 'components/Table/Table'
 import React, { useEffect, useState } from 'react'
 import { getAllProducts } from 'server/services/product/product.service';
 
-const ViewProducts = () => {
+const ViewOrders = () => {
     const [products,setProducts] = useState([]);
     const [update,setUpdate] = useState(false);
     useEffect(()=>{
@@ -20,4 +20,4 @@ const ViewProducts = () => {
   )
 }
 
-export default ViewProducts
+export default ViewOrders

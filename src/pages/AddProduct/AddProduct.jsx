@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import React from 'react'
 
 import {
@@ -27,12 +28,16 @@ const AddProduct = () => {
           }
         })
         if(!c) {
+          message.loading("Adding...")
           const fd = new FormData(e.target);
+
           addProduct(fd)
           .then((res)=>{
+            message.success("Added successfully!")
             console.log(res);
           })
           .catch((err)=>{
+            message.error("Some error occured! Please try again.")
             console.log(err);
           })
         }
@@ -72,17 +77,6 @@ const AddProduct = () => {
                             <option value="">Select Category</option>
                             <option value="Soap">Soap</option>
                         </Form.Select>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md="12">
-                      <Form.Group>
-                        {/* <label>Address</label> */}
-                        <Form.Group controlId="formFileMultiple">
-                            <Form.Label>Upload Product Images</Form.Label>
-                            <Form.Control name="image" type="file" multiple size="sm" accept="image/*" />
-                        </Form.Group>
                       </Form.Group>
                     </Col>
                   </Row>
@@ -127,8 +121,20 @@ const AddProduct = () => {
                       </Form.Group>
                     </Col>
                   </Row>
+                  <Row className='mb-3'>
+                    <Col md="12">
+                      <Form.Group>
+                        {/* <label>Address</label> */}
+                        <Form.Group controlId="formFileMultiple">
+                            <Form.Label>Upload Product Images</Form.Label>
+                            <Form.Control name="image" type="file" multiple size="sm" accept="image/*" />
+                        </Form.Group>
+                      </Form.Group>
+                    </Col>
+                  </Row>
                   <Button
                     className="btn-fill pull-right"
+                    style={{background:"#247F70", boxShadow:"0 4px 9px -4px #247F70"}}
                     type="submit"
                     variant="info"
                   >
