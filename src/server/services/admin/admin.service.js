@@ -36,3 +36,15 @@ export const deleteProduct = async (id)=>{
         return Promise.reject(err)
     })
 }
+
+export const getAllOrders = async (filter="")=>{
+    const route = filter?("/admin/filterorder?status="+filter):("/admin/filterorder")
+    return await axios.get(route,accessHeader())
+    .then((res)=>{
+        return Promise.resolve(res.data)
+    })
+    .catch((err)=>{
+        console.log(err);
+        return Promise.reject(err)
+    })
+}

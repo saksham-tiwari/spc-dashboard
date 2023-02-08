@@ -21,6 +21,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModal from "./DeleteModal"
 import { deleteProduct } from 'server/services/admin/admin.service';
 import { message } from 'antd';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -149,12 +153,43 @@ export default function CustomPaginationActionsTable(props) {
     }
   },[del])
 
+  const getDate = (x)=>{
+    var date = new Date(x)
+    return (date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear())
+  }
+
+
   return (
     <TableContainer component={Paper}>
     <DeleteModal show={show} setShow={setShow} prodId={prodId} setDel={setDel}/>
 
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
       <TableHead>
+          {props.titles.length===6&&<TableRow>
+            <StyledTableCell colSpan="3">Order History</StyledTableCell>
+            <StyledTableCell colSpan="2">
+              
+            </StyledTableCell>
+            <StyledTableCell colSpan={"1"}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={props.filter}
+                label="filter"
+                onChange={(e)=>props.setFilter(e.target.value)}
+              >
+                <MenuItem value={""}>All</MenuItem>
+                <MenuItem value={"pending"}>pending</MenuItem>
+                <MenuItem value={"onHold"}>onHold</MenuItem>
+                <MenuItem value={"Completed"}>Completed</MenuItem>
+                <MenuItem value={"cancelled"}>cancelled</MenuItem>
+                <MenuItem value={"delivered"}>delivered</MenuItem>
+              </Select>
+            </FormControl>
+            </StyledTableCell>
+          </TableRow>}
           <TableRow>
             {props.titles.map((title,i)=><StyledTableCell align={!i?"left":"center"}>{title}</StyledTableCell>)}
             {/* <StyledTableCell>Dessert (100g serving)</StyledTableCell>
@@ -168,7 +203,58 @@ export default function CustomPaginationActionsTable(props) {
           {(rowsPerPage > 0
             ? props.products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : props.products
-          ).map((prod,i) => (
+          ).map((prod,i)=>{
+            if(props.titles.length===5) {return <TableRow key={prod._id}>
+              <TableCell style={{ width: 160 }} component="th" scope="row">
+                {prod.name}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                {prod.category}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                {prod.quantity}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                {prod.price}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                <div className='d-flex align-items-center justify-content-center actions'>
+                  <EditIcon className='cursor-pointer edit'/>
+                  <DeleteIcon onClick={()=>{
+                    setProdId(prod._id)
+                    setShow(true)
+                    }} className='cursor-pointer delete'/>
+                </div>
+              </TableCell>
+            </TableRow>}  
+            else {return <TableRow key={prod._id}>
+              <TableCell style={{ width: 160 }} component="th" scope="row">
+                {prod._id}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                {prod.status}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                {prod.amount/100}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                {prod.createdBy.Name}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                {getDate(prod.createdAt)}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="center">
+                <div className='d-flex align-items-center justify-content-center actions'>
+                  <EditIcon className='cursor-pointer edit'/>
+                  <DeleteIcon onClick={()=>{
+                    setProdId(prod._id)
+                    setShow(true)
+                    }} className='cursor-pointer delete'/>
+                </div>
+              </TableCell>
+            </TableRow>}
+          })}
+          {/* .map((prod,i) => (
             <TableRow key={prod._id}>
               <TableCell style={{ width: 160 }} component="th" scope="row">
                 {prod.name}
@@ -192,7 +278,7 @@ export default function CustomPaginationActionsTable(props) {
                 </div>
               </TableCell>
             </TableRow>
-          ))}
+          ))} */}
 
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
