@@ -24,3 +24,27 @@
 .actions .delete{
     color: rgb(225, 67, 43);
 }
+
+.filter *{
+    color: white !important;
+}
+
+.MuiNativeSelect-select *, .MuiOutlinedInput-root *, .MuiList-root,.filter *{
+    text-transform: capitalize;
+}
+
+.prodImages img{
+    height: 100px;
+    margin: 6px 6px;
+    border: 0.5px grey solid;
+}
+
+.prodImages .cross{
+    position: relative;
+    right: 17px;
+    background-color: rgba(255, 0, 0, 0.779);
+    border-radius: 50%;
+    padding: 2.5px 5px;
+    top: -45px;
+    color: white;
+}

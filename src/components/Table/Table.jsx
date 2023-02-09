@@ -25,6 +25,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import EditStatus from './EditStatus';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -136,6 +137,7 @@ export default function CustomPaginationActionsTable(props) {
   const [show,setShow] = React.useState(false);
   const [del,setDel] = React.useState("");
   const [prodId,setProdId] = React.useState("");
+  const [openEdit, setOpenEdit] = React.useState("");
   React.useEffect(()=>{
     if(del.length){
       deleteProduct(del)
@@ -158,7 +160,6 @@ export default function CustomPaginationActionsTable(props) {
     return (date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear())
   }
 
-
   return (
     <TableContainer component={Paper}>
     <DeleteModal show={show} setShow={setShow} prodId={prodId} setDel={setDel}/>
@@ -166,12 +167,17 @@ export default function CustomPaginationActionsTable(props) {
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
       <TableHead>
           {props.titles.length===6&&<TableRow>
-            <StyledTableCell colSpan="3">Order History</StyledTableCell>
+            <StyledTableCell colSpan="3">
+              <h3>Order History</h3>
+            </StyledTableCell>
             <StyledTableCell colSpan="2">
               
             </StyledTableCell>
             <StyledTableCell colSpan={"1"}>
-            <FormControl fullWidth>
+            <FormControl 
+                fullWidth 
+                className='filter'
+            >
               <InputLabel id="demo-simple-select-label">Filter</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -231,8 +237,12 @@ export default function CustomPaginationActionsTable(props) {
               <TableCell style={{ width: 160 }} component="th" scope="row">
                 {prod._id}
               </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                {prod.status}
+              <TableCell style={{ width: 160, textTransform:"capitalize" }} align="center">
+                {prod.status} <EditIcon fontSize='small' className='cursor-pointer edit' onClick={()=>{
+                  console.log(prod._id)
+                  setOpenEdit(prod._id)
+                }} />
+                <EditStatus openEdit={openEdit} setOpenEdit={setOpenEdit} curr={prod.status} setUpdate={props.setUpdate} />
               </TableCell>
               <TableCell style={{ width: 160 }} align="center">
                 {prod.amount/100}
@@ -246,10 +256,10 @@ export default function CustomPaginationActionsTable(props) {
               <TableCell style={{ width: 160 }} align="center">
                 <div className='d-flex align-items-center justify-content-center actions'>
                   <EditIcon className='cursor-pointer edit'/>
-                  <DeleteIcon onClick={()=>{
+                  {/* <DeleteIcon onClick={()=>{
                     setProdId(prod._id)
                     setShow(true)
-                    }} className='cursor-pointer delete'/>
+                    }} className='cursor-pointer delete'/> */}
                 </div>
               </TableCell>
             </TableRow>}

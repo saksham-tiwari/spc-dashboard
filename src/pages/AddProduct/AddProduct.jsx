@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     Badge,
@@ -46,6 +46,26 @@ const AddProduct = () => {
         //   }
           
     }
+
+    const [images,setImages] = useState([])
+
+    const imageHandle = (e)=>{
+      let temp = [...images];
+      [...e.target.files].forEach((file)=>{
+        let url = URL.createObjectURL(file)
+        temp.push(url)
+      })
+      setImages(temp)
+    }
+
+    const removeImg = (i)=>{
+      let temp = [...images];
+      temp.splice(i,1);
+      setImages(temp)
+    }
+    useEffect(()=>{
+      console.log(images);
+    },[images])
   return (
     <Container fluid>
         <Row>
@@ -127,8 +147,14 @@ const AddProduct = () => {
                         {/* <label>Address</label> */}
                         <Form.Group controlId="formFileMultiple">
                             <Form.Label>Upload Product Images</Form.Label>
-                            <Form.Control name="image" type="file" multiple size="sm" accept="image/*" />
+                            <Form.Control name="image" type="file" multiple size="sm" accept="image/*" onChange={(e)=>imageHandle(e)} />
                         </Form.Group>
+                        <div className='prodImages mt-3'>
+                          {images.map((img,i)=><>
+                            <img src={img} key={i} alt="Product Image"></img>
+                            <span className='cross cursor-pointer' onClick={()=>removeImg(i)}>&times;</span>
+                          </>)}
+                        </div>
                       </Form.Group>
                     </Col>
                   </Row>

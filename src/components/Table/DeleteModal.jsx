@@ -9,7 +9,7 @@ function DeleteModal(props) {
     if(cond) props.setDel(props.prodId)
     props.setShow(false);
 }
-  const handleShow = () => props.setShow(true);
+//   const handleShow = () => props.setShow(true);
 
   return (
     <>

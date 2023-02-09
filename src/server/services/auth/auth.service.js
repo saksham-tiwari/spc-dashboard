@@ -72,5 +72,5 @@ export const changePass = async (data)=>{
 
 export const logout = (cond)=>{
     localStorage.clear()
-    // if(cond)window.location.reload()
+    if(cond) window.location.reload()
 }
