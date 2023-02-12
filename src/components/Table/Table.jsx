@@ -270,7 +270,7 @@ export default function CustomPaginationActionsTable(props) {
                   <span className='cursor-pointer' onClick={()=>{
                     console.log(prod)
                     setViewUser(prod.createdBy)}} > <VisibilityIcon className='edit'/> View Details </span>
-                  <UserModal open={viewUser} setOpen={setViewUser} user={prod.createdBy} prod={prod}  />
+                  <UserModal open={viewUser} setOpen={setViewUser} prod={prod}/>
                   {/* <DeleteIcon onClick={()=>{
                     setProdId(prod._id)
                     setShow(true)

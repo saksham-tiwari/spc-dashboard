@@ -46,9 +46,9 @@ export default function UserModal(props) {
             User Details
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Name : {props.user.Name} <br/>
-            Email : {props.user.email} <br/>
-            Phone : {props.user.phoneNumber}
+            Name : {props.prod.createdBy.Name} <br/>
+            Email : {props.prod.createdBy.email} <br/>
+            Phone : {props.prod.createdBy.phoneNumber}
           </Typography>
         </Box>
       </Modal>
