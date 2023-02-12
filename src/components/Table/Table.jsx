@@ -26,6 +26,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import EditStatus from './EditStatus';
+import { useHistory } from 'react-router';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import UserModal from './UserModal';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -124,7 +127,7 @@ export default function CustomPaginationActionsTable(props) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - page.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -138,13 +141,14 @@ export default function CustomPaginationActionsTable(props) {
   const [del,setDel] = React.useState("");
   const [prodId,setProdId] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState("");
+  const [viewUser,setViewUser] = React.useState({})
   React.useEffect(()=>{
     if(del.length){
       deleteProduct(del)
       .then((res)=>{
         console.log(res)
         setDel("")
-        props.setUpdate(true)
+        props.setUpdate(prev=>!prev)
         message.success("Deleted")
       })
       .catch((err)=>{
@@ -159,6 +163,7 @@ export default function CustomPaginationActionsTable(props) {
     var date = new Date(x)
     return (date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear())
   }
+  const history = useHistory()
 
   return (
     <TableContainer component={Paper}>
@@ -225,7 +230,13 @@ export default function CustomPaginationActionsTable(props) {
               </TableCell>
               <TableCell style={{ width: 160 }} align="center">
                 <div className='d-flex align-items-center justify-content-center actions'>
-                  <EditIcon className='cursor-pointer edit'/>
+                  <EditIcon onClick={()=>{
+                    // history.push("/admin/add-product")
+                    history.push({ 
+                      pathname: '/admin/add-product',
+                      state: {product:prod}
+                      });
+                    }} className='cursor-pointer edit'/>
                   <DeleteIcon onClick={()=>{
                     setProdId(prod._id)
                     setShow(true)
@@ -255,7 +266,11 @@ export default function CustomPaginationActionsTable(props) {
               </TableCell>
               <TableCell style={{ width: 160 }} align="center">
                 <div className='d-flex align-items-center justify-content-center actions'>
-                  <EditIcon className='cursor-pointer edit'/>
+                  {/* <EditIcon className='cursor-pointer edit'/> */}
+                  <span className='cursor-pointer' onClick={()=>{
+                    console.log(prod)
+                    setViewUser(prod.createdBy)}} > <VisibilityIcon className='edit'/> View Details </span>
+                  <UserModal open={viewUser} setOpen={setViewUser} user={prod.createdBy} prod={prod}  />
                   {/* <DeleteIcon onClick={()=>{
                     setProdId(prod._id)
                     setShow(true)
