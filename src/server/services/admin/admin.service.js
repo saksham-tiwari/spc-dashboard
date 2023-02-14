@@ -13,7 +13,8 @@ axios.interceptors.response.use(function (response) {
     return response;
   }, function (error) {
     //   if(error.response.config.url)
-    if (401 === error.response.status) store.dispatch(signout(true))
+    if (401 === error.response.status) store.dispatch(signout(false))
+    // else if(401 === error.response.status && error.response.data.error.data!=="Invalid credentials") store.dispatch(signout(true))
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     return Promise.reject(error);
@@ -52,8 +53,9 @@ export const deleteProduct = async (id)=>{
     })
 }
 
-export const getAllOrders = async (filter="")=>{
-    const route = filter?("/admin/filterorder?status="+filter):("/admin/filterorder")
+export const getAllOrders = async (filter="",search="")=>{
+    let route = filter?("/admin/filterorder?status="+filter):("/admin/filterorder")
+    route = search?(route+"?search="+search):(route)
     return await axios.get(route,accessHeader())
     .then((res)=>{
         return Promise.resolve(res.data)

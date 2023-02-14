@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ChartistGraph from "react-chartist";
 // react-bootstrap components
 import {
@@ -15,8 +15,37 @@ import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
+import { getAllProducts } from "server/services/product/product.service";
+import { getAllOrders } from "server/services/admin/admin.service";
 
 function Dashboard() {
+  const [prods,setProds] = useState([]);
+  const [orders,setOrders] = useState([])
+  const [inter,setInter] = useState(0)
+
+  useEffect(()=>{
+    getAllProducts()
+    .then((res)=>{
+      setProds(res.data)
+    })
+    .catch((err)=>{
+      setProds([])
+    })
+    getAllOrders()
+    .then((res)=>{
+      setOrders(res.data)
+    })
+    .catch((err)=>{
+      setOrders([])
+    })
+  },[])
+  useEffect(()=>{
+    getInter()
+  },[prods])
+  const getInter = ()=>{
+    setInter(0);
+    prods.forEach(prod=>setInter(prev=> (prev + prod.eachrating.length)))
+  }
   return (
     <>
       <Container fluid>
@@ -32,19 +61,19 @@ function Dashboard() {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Number</p>
-                      <Card.Title as="h4">150GB</Card.Title>
+                      <p className="card-category">Total Products</p>
+                      <Card.Title as="h4">{prods.length}</Card.Title>
                     </div>
                   </Col>
                 </Row>
               </Card.Body>
-              <Card.Footer>
+              {/* <Card.Footer>
                 <hr></hr>
                 <div className="stats">
                   <i className="fas fa-redo mr-1"></i>
                   Update Now
                 </div>
-              </Card.Footer>
+              </Card.Footer> */}
             </Card>
           </Col>
           <Col lg="3" sm="6">
@@ -58,19 +87,19 @@ function Dashboard() {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Revenue</p>
-                      <Card.Title as="h4">$ 1,345</Card.Title>
+                      <p className="card-category">Total Orders</p>
+                      <Card.Title as="h4">{orders.length}</Card.Title>
                     </div>
                   </Col>
                 </Row>
               </Card.Body>
-              <Card.Footer>
+              {/* <Card.Footer>
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-calendar-alt mr-1"></i>
                   Last day
                 </div>
-              </Card.Footer>
+              </Card.Footer> */}
             </Card>
           </Col>
           <Col lg="3" sm="6">
@@ -84,19 +113,19 @@ function Dashboard() {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Errors</p>
-                      <Card.Title as="h4">23</Card.Title>
+                      <p className="card-category">Total users</p>
+                      <Card.Title as="h4">5</Card.Title>
                     </div>
                   </Col>
                 </Row>
               </Card.Body>
-              <Card.Footer>
+              {/* <Card.Footer>
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-clock-o mr-1"></i>
                   In the last hour
                 </div>
-              </Card.Footer>
+              </Card.Footer> */}
             </Card>
           </Col>
           <Col lg="3" sm="6">
@@ -110,23 +139,23 @@ function Dashboard() {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Followers</p>
-                      <Card.Title as="h4">+45K</Card.Title>
+                      <p className="card-category">Total Interactions</p>
+                      <Card.Title as="h4">{inter}</Card.Title>
                     </div>
                   </Col>
                 </Row>
               </Card.Body>
-              <Card.Footer>
+              {/* <Card.Footer>
                 <hr></hr>
                 <div className="stats">
                   <i className="fas fa-redo mr-1"></i>
                   Update now
                 </div>
-              </Card.Footer>
+              </Card.Footer> */}
             </Card>
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col md="8">
             <Card>
               <Card.Header>
@@ -631,7 +660,7 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
       </Container>
     </>
   );

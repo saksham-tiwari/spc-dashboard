@@ -16,6 +16,7 @@ import { login } from 'server/services/auth/auth.service';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from 'server/redux/actions/user';
 import { useHistory } from 'react-router';
+import { message } from 'antd';
 
 function App() {
     const dispatch = useDispatch()
@@ -47,16 +48,21 @@ function App() {
             .then(async(res) => {
                 console.log(res);
                 // dispatch(setLoading(false))
-                localStorage.setItem("user", JSON.stringify(res.data))
-                localStorage.setItem("token", res.data.token)
-                await dispatch(setUser(true))
-                history.push("/admin/dashboard")
+                if(res.data.role==="Admin"){
+                  localStorage.setItem("user", JSON.stringify(res.data))
+                  localStorage.setItem("token", res.data.token)
+                  await dispatch(setUser(true))
+                  history.push("/admin/dashboard")
+                }
+                else {
+                  message.error("Not authorized!")
+                }
             })
             .catch((err) => { 
                 console.log(err);
                 if(err.response.status===401) setPassErr("Incorrect Password!")
                 if(err.response.status===404) setEmailErr("Invalid user! Create an account.")
-                console.log(err);
+                // console.log(err);
                 // dispatch(setLoading(false))
             })
         }

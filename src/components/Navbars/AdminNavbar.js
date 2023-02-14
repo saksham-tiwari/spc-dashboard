@@ -20,6 +20,8 @@ import { useLocation } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 
 import routes from "routes.js";
+import { useDispatch } from "react-redux";
+import { signout } from "server/redux/actions/user";
 
 function Header() {
   const location = useLocation();
@@ -43,6 +45,7 @@ function Header() {
     }
     return "Brand";
   };
+  const dispatch = useDispatch();
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -69,7 +72,7 @@ function Header() {
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto" navbar>
-            <Nav.Item>
+            {/* <Nav.Item>
               <Nav.Link
                 className="m-0"
                 href="#pablo"
@@ -123,12 +126,15 @@ function Header() {
                   Separated link
                 </Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
             <Nav.Item>
               <Nav.Link
                 className="m-0"
                 href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  dispatch(signout(false))
+                  e.preventDefault()
+                }}
               >
                 <span className="no-icon">Log out</span>
               </Nav.Link>

@@ -29,6 +29,7 @@ import EditStatus from './EditStatus';
 import { useHistory } from 'react-router';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import UserModal from './UserModal';
+import { TextField } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -176,7 +177,7 @@ export default function CustomPaginationActionsTable(props) {
               <h3>Order History</h3>
             </StyledTableCell>
             <StyledTableCell colSpan="2">
-              
+              <TextField className='filter' id="outlined-basic" label="Search" variant="outlined" value={props.search} onChange={(e)=>props.setSearch(e.target.value)} />
             </StyledTableCell>
             <StyledTableCell colSpan={"1"}>
             <FormControl 
