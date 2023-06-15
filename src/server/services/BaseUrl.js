@@ -1,1 +1,1 @@
-export const BaseUrl = "http://65.0.26.69:3000"
+export const BaseUrl = "https://api.spccare.in/"
