@@ -1,1 +1,1 @@
-export const BaseUrl = "https://api.spccare.in/"
+export const BaseUrl = "https://api.spccare.in"
